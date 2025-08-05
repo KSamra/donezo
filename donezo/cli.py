@@ -1,8 +1,16 @@
 import sys
 import argparse
-from commands import add
+from .commands import add
+import os
 
 def main():
+
+    home_dir = os.path.expanduser('~')
+    data_dir = os.path.join(home_dir, '.donezo')
+    os.makedirs(data_dir, exist_ok=True)
+    data_path = os.path.join(data_dir, 'data.json')
+
+    print(f'Storing tasks in {data_path}')
 
     parser = argparse.ArgumentParser(prog='donezo', description='A simple task tracker')
     subparsers = parser.add_subparsers(dest='action', required=True)
@@ -28,6 +36,7 @@ def main():
     match args.action:
         case 'add':
             task_desc = args.task_description
+            add(task_desc)
 
         case 'update':
             print('running update')

@@ -1,4 +1,4 @@
-from models.task import Task
+from donezo.models.task import Task
 
 def add(desc: str):
-    pass
+    print(f'received new task to track! {desc=}')
