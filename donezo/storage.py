@@ -1,4 +1,5 @@
 import os
+import json
 
 # %%
 def getDataPath() -> str:
@@ -15,7 +16,51 @@ def getDataPath() -> str:
     data_path = os.path.join(data_dir, 'data.json')
     return data_path
 
-def printStorage():
+def loadData() -> dict | None:
+    """
+    Load data from .json storage file. 
+
+    Returns:
+        dict | None: User data in the form of a dictionary in json format (all keys are strings), or None
+    """
+    path = getDataPath()
+
+    try:
+        with open(path, 'r') as f:
+            data = json.load(f)
+    except FileNotFoundError:
+        print('Data file not found!')
+        return None
+    except json.JSONDecodeError:
+        print('Data file is corrupted or improperly formatted.')
+        return None
+    
+    return data
+
+def writeData(data: dict) -> None:
+    """
+    Write the provided data to storage. 'data' must be a dictionary who's keys adhere to json formatted (keys are strings)
+
+    Returns:
+        None
+    """
+    path = getDataPath()
+
+    try:
+        with open(path, 'w') as f:
+            json.dump(data, f, indent=2)
+    except TypeError as e:
+        print('Writing to storage failed: ', e)
+
+
+
+def printStorage() -> None:
+    """
+    print output of storage file to console
+
+    Returns:
+        None
+    """
     path = getDataPath()
 
     try:
@@ -27,7 +72,7 @@ def printStorage():
 
 if __name__ == '__main__':
     path = getDataPath()
-    print(f'received file_path = {path}')
+    print(f'Storage file_path = {path}')
     printStorage()
 
 
