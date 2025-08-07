@@ -15,9 +15,20 @@ def getDataPath() -> str:
     data_path = os.path.join(data_dir, 'data.json')
     return data_path
 
+def printStorage():
+    path = getDataPath()
+
+    try:
+        with open(path, 'r') as f:
+            for line in f.readlines():
+                print(line)
+    except FileNotFoundError:
+        print('File does not exist!')
 
 if __name__ == '__main__':
     path = getDataPath()
     print(f'received file_path = {path}')
+    printStorage()
+
 
 

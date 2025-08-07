@@ -25,6 +25,7 @@ def add(desc: str) -> int:
         
     else:
         data['latest_id'] = task_id
+        data['tasks'] = {}
 
     new_task = Task(task_id, desc)
     data['tasks'][str(task_id)] = new_task.to_dict()
