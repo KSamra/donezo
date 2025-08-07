@@ -1,6 +1,5 @@
 from donezo.models.task import Task
-from donezo.storage import getDataPath
-import json
+from donezo.storage.storage import loadData, writeData
 
 def add(desc: str) -> int:
     """
@@ -9,12 +8,9 @@ def add(desc: str) -> int:
     Returns:
         int: the id of the newly created task
     """
-    data_path = getDataPath()
 
-    try:
-        with open(data_path, "r") as f:
-            data = json.load(f)
-    except FileNotFoundError:
+    data = loadData()
+    if not data:
         data = {}
 
     task_id = 0
@@ -30,8 +26,7 @@ def add(desc: str) -> int:
     new_task = Task(task_id, desc)
     data['tasks'][str(task_id)] = new_task.to_dict()
 
-    with open(data_path, 'w', encoding='utf-8') as f:
-        json.dump(data, f, indent=2)
+    writeData(data)
 
     return task_id
 

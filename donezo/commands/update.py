@@ -1,6 +1,5 @@
 from donezo.models.task import Task
-from donezo.storage import getDataPath
-import json
+from donezo.storage.storage import loadData, writeData
 
 def update(id: int, desc: str) -> bool:
     """
@@ -9,14 +8,10 @@ def update(id: int, desc: str) -> bool:
     Returns:
         bool: whether the task was updated or not. If False, the task does not exist
     """
-    #see if the task exists
-    path = getDataPath()
-    
-    try:
-        with open(path, 'r') as f:
-            data = json.load(f)
-    except FileNotFoundError:
-        print(f'There is no storage file to update')
+
+    data = loadData()
+    if not data:
+        print('Tried to update but there is no data to update')
         return False
     
     tasks = data['tasks']
@@ -31,8 +26,8 @@ def update(id: int, desc: str) -> bool:
 
         #write back to storage
         tasks[str_id] = task_dict
-        with open(path, 'w', encoding='utf-8') as f:
-            json.dump(data, f, indent=2)
+
+        writeData(data)
 
     else:
         print(f'There is no task with {id=} being tracked')
@@ -42,5 +37,5 @@ def update(id: int, desc: str) -> bool:
 
 if __name__ == '__main__':
     
-    res = update(1, 'nothing')
+    res = update(3, 'super cool update')
     print(f'update result = {res}')
