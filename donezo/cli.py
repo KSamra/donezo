@@ -1,6 +1,6 @@
 import sys
 import argparse
-from commands import add_task, update_task, list_tasks, mark_task, delete_task
+from donezo.commands import add_task, update_task, list_tasks, mark_task, delete_task
 
 def main():
 
@@ -27,7 +27,7 @@ def main():
 
     #List command
     list_parser = subparsers.add_parser('list')
-    list_parser.add_argument('task_status', type=str, choices=['done', 'todo', 'in-progress'])
+    list_parser.add_argument('task_status', type=str, choices=['done', 'todo', 'in-progress', 'all'])
     list_parser.add_argument('--value', type=lambda x: x.lower() == 'true', default=True, help='Boolean value to filter by. Default to TRUE')
 
 
@@ -58,7 +58,12 @@ def main():
         case 'list':
             task_status = args.task_status
             filter_value = args.value
-            list_tasks(task_status, filter_value)
+
+            #temporary hack to list all tasks
+            if task_status == 'all':
+                list_tasks('')
+            else:
+                list_tasks(task_status, filter_value)
         case _:
             sys.stderr.write('invalid command supplied. See README')
             return
