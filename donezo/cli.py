@@ -1,7 +1,6 @@
 import sys
 import argparse
-from commands import add_task, update_task, list_tasks, mark_task
-# import os
+from commands import add_task, update_task, list_tasks, mark_task, delete_task
 
 def main():
 
@@ -33,8 +32,6 @@ def main():
 
 
     args = parser.parse_args()
-
-    print(vars(args))
     
     if not args:
         sys.stderr.write('missing arguments to the cli')
@@ -51,6 +48,7 @@ def main():
             res = update_task(task_id, task_desc)
         case 'delete':
             task_id = args.task_id
+            delete_task(task_id)
         case 'mark-in-progress':
             task_id = args.task_id
             mark_task(task_id, 'in-progress')
