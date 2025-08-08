@@ -1,6 +1,6 @@
 import sys
 import argparse
-# from .commands import add
+from commands import add_task, update_task, list_tasks, mark_task
 # import os
 
 def main():
@@ -15,6 +15,7 @@ def main():
     # Update command
     update_parser = subparsers.add_parser('update')
     update_parser.add_argument('task_id', type=int)
+    update_parser.add_argument('task_description', type=str)
 
     # Delete command
     delete_parser = subparsers.add_parser('delete')
@@ -28,6 +29,7 @@ def main():
     #List command
     list_parser = subparsers.add_parser('list')
     list_parser.add_argument('task_status', type=str, choices=['done', 'todo', 'in-progress'])
+    list_parser.add_argument('--value', type=lambda x: x.lower() == 'true', default=True, help='Boolean value to filter by. Default to TRUE')
 
 
     args = parser.parse_args()
@@ -41,24 +43,24 @@ def main():
     match args.action:
         case 'add':
             task_desc = args.task_description
-            print(f'running add with a task {task_desc=}')
             # add(task_desc)
-
+            new_task_id = add_task(task_desc)
         case 'update':
             task_id = args.task_id
-            print(f'running update on {task_id=}')
+            task_desc = args.task_description
+            res = update_task(task_id, task_desc)
         case 'delete':
             task_id = args.task_id
-            print(f'running delete on {task_id=}')
         case 'mark-in-progress':
             task_id = args.task_id
-            print(f'running mark-in-progress on {task_id=}')
+            mark_task(task_id, 'in-progress')
         case 'mark-done':
             task_id = args.task_id
-            print(f'runnning mark-done on {task_id=}')
+            mark_task(task_id, 'done')
         case 'list':
             task_status = args.task_status
-            print(f'running list for all where {task_status=}')
+            filter_value = args.value
+            list_tasks(task_status, filter_value)
         case _:
             sys.stderr.write('invalid command supplied. See README')
             return

@@ -1,7 +1,7 @@
 from donezo.models.task import Task
 from donezo.storage.storage import loadData, writeData
 
-def add(desc: str) -> int:
+def add_task(desc: str) -> int:
     """
     Add a new task with the provided desc to be tracked
 
@@ -32,6 +32,6 @@ def add(desc: str) -> int:
 
 
 if __name__ == '__main__':
-    id = add('My first task!')
+    id = add_task('My first task!')
     print(f'created new task with {id=}')
     

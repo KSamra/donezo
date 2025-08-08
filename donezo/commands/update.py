@@ -1,7 +1,7 @@
 from donezo.models.task import Task
 from donezo.storage.storage import loadData, writeData
 
-def update(id: int, desc: str) -> bool:
+def update_task(id: int, desc: str) -> bool:
     """
     Update a task with the provided id. Overwrites the existing task description to what is provided in desc
 
@@ -37,5 +37,5 @@ def update(id: int, desc: str) -> bool:
 
 if __name__ == '__main__':
     
-    res = update(3, 'super cool update')
+    res = update_task(3, 'super cool update')
     print(f'update result = {res}')

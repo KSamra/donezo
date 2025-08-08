@@ -11,6 +11,9 @@ def format(task: dict) -> str:
     #<3 and <12 means 'left-align in field with this many characters. [:30] means limit to 30 characters
     return f"{task['id']: <3} | {task['status']: <12} | {task['description'][:30]}"
 
+def header() -> str:
+    return f"{'ID': <3} | {'Status': <12} | {'Description': <30}"
+
 
 
 def filter_tasks(status: str | None, tasks: dict, match_status: bool = True) -> list[str]:
@@ -47,6 +50,7 @@ def list_tasks(status: str | None = None, match_status: bool = True) -> None:
     else:
         print(f'Total tasks = {len(tasks)}')
 
+    print(header())
     for task in tasks:
         print(task)
         
